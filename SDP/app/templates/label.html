@@ -1,0 +1,61 @@
+<!-- app/templates/label.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Label Example</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="mb-3">
+      <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+    </div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% if message %}
+      <div class="alert alert-success text-center">
+        <h4>{{ message }}</h4>
+      </div>
+    {% elif example %}
+      <div class="card">
+        <div class="card-header">
+          <h4>Label the Following Example</h4>
+        </div>
+        <div class="card-body">
+          <h5>Prompt:</h5>
+          <p>{{ example.prompt }}</p>
+          <hr>
+          <h5>Response:</h5>
+          <p>{{ example.response }}</p>
+          <form method="POST">
+            <input type="hidden" name="example_id" value="{{ example.id }}">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="label" id="nonToxic" value="non-toxic" required>
+              <label class="form-check-label" for="nonToxic">Non-Toxic</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="label" id="toxic" value="toxic" required>
+              <label class="form-check-label" for="toxic">Toxic</label>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Submit Label</button>
+          </form>
+        </div>
+      </div>
+    {% else %}
+      <div class="alert alert-warning text-center">
+        <h4>No examples available to label.</h4>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
